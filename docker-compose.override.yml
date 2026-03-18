@@ -1,0 +1,6 @@
+services:
+  wiki:
+    volumes:
+      - ./patches/page-helper-patch.js:/wiki/server/helpers/page.js:ro
+      - ./patches/mermaid-renderer.js:/wiki/server/modules/rendering/html-mermaid/renderer.js:ro
+      - ./patches/page-view-patch.pug:/wiki/server/views/page.pug:ro
