@@ -40,17 +40,10 @@ block body
     != injectCode.body
   if config.features.featurePageComments
     != comments.body
-  //- Mermaid v10 client-side override.
-  //- WikiJS v2 bundles Mermaid 8.8.2 (CommonJS, Dec 2020) which cannot be upgraded
-  //- because Mermaid 9+ is ESM-only and incompatible with WikiJS's Webpack 4 build.
-  //- This patch loads Mermaid v10 from CDN and renders diagrams client-side,
-  //- bypassing the bundled v8 entirely. A MutationObserver handles Vue.js SPA
-  //- navigation so diagrams re-render when navigating between pages.
-  //- See: https://github.com/requarks/wiki/pull/7714
-  script(src='https://cdn.jsdelivr.net/npm/mermaid@10.9.3/dist/mermaid.min.js')
+  //- Mermaid v10 override — bypasses bundled v8.8.2
+  script(src='https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js')
   script.
     (function () {
-      if (typeof mermaid === 'undefined') return;
       mermaid.initialize({ startOnLoad: false, theme: 'default' });
       function renderMermaid() {
         var els = document.querySelectorAll('.mermaid-v10:not([data-processed])');
@@ -68,7 +61,7 @@ block body
           });
         });
       }
-      // MutationObserver: re-render diagrams on Vue.js SPA page navigation
+      // MutationObserver: gestisce navigazione SPA Vue.js
       var observer = new MutationObserver(function () {
         if (document.querySelectorAll('.mermaid-v10:not([data-processed])').length > 0)
           renderMermaid();
